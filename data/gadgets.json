@@ -1,0 +1,34 @@
+{
+  "gadgets": [
+    {
+      "id": 1,
+      "name": "Quantum Debugger 3000",
+      "description": "Fixes bugs before you even write them. Works on multiple timelines simultaneously.",
+      "price": "$999.99"
+    },
+    {
+      "id": 2,
+      "name": "AI-Powered Rubber Duck",
+      "description": "Now with GPT-5! Listens to your code problems and actually talks back with solutions.",
+      "price": "$149.99"
+    },
+    {
+      "id": 3,
+      "name": "Blockchain Toaster",
+      "description": "Decentralized bread browning. Each slice is minted as an NFT. Gas fees not included.",
+      "price": "$299.99"
+    },
+    {
+      "id": 4,
+      "name": "Neural Network Coffee Maker",
+      "description": "Machine learning that actually makes your morning coffee. Trained on 10 million espresso shots.",
+      "price": "$599.99"
+    },
+    {
+      "id": 5,
+      "name": "Serverless Can Opener",
+      "description": "Opens cans without any servers! Scales infinitely. May require cloud subscription.",
+      "price": "$79.99"
+    }
+  ]
+}
