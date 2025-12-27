@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Gadget Store</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .gadget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .gadget-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .gadget-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .gadget-name {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        .gadget-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .gadget-price {
+            color: #27ae60;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .no-gadgets {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Tech Gadget Store</h1>
+    
+    {% if gadgets %}
+    <div class="gadget-grid">
+        {% for gadget in gadgets %}
+        <div class="gadget-card" data-gadget-id="{{ gadget.id }}">
+            <h2 class="gadget-name">{{ gadget.name }}</h2>
+            <p class="gadget-description">{{ gadget.description }}</p>
+            <div class="gadget-price">{{ gadget.price }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-gadgets">
+        <p>No gadgets available at the moment. Check back soon!</p>
+    </div>
+    {% endif %}
+</body>
+</html>
