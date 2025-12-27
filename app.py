@@ -31,4 +31,8 @@ def api_gadgets():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Only enable debug mode when explicitly set via environment variable
+    # This prevents accidentally running debug mode in production
+    import os
+    debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() in ('true', '1', 'yes')
+    app.run(debug=debug_mode, port=5000)

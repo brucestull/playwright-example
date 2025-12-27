@@ -35,6 +35,15 @@ python app.py
 
 Visit `http://localhost:5000` in your browser.
 
+**Development Mode:**
+To enable Flask debug mode for development (with auto-reload and detailed error pages):
+
+```bash
+FLASK_DEBUG=true python app.py
+```
+
+**Note:** Debug mode is disabled by default for security. Never enable it in production.
+
 ## Testing
 
 ### Run Unit Tests (pytest)
