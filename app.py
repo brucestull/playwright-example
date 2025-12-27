@@ -26,7 +26,8 @@ def index():
 @app.route('/api/gadgets')
 def api_gadgets():
     """API endpoint to get gadgets as JSON."""
-    return load_gadgets()
+    from flask import jsonify
+    return jsonify(load_gadgets())
 
 
 if __name__ == '__main__':

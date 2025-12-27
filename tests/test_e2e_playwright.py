@@ -6,7 +6,22 @@ import subprocess
 import time
 import signal
 import os
+import sys
+import urllib.request
+import urllib.error
 from playwright.sync_api import Page, expect
+
+
+def wait_for_server(url, timeout=10, interval=0.5):
+    """Wait for server to be ready by polling the endpoint."""
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        try:
+            urllib.request.urlopen(url, timeout=1)
+            return True
+        except (urllib.error.URLError, ConnectionError):
+            time.sleep(interval)
+    return False
 
 
 @pytest.fixture(scope="module")
@@ -15,21 +30,44 @@ def flask_server():
     # Start Flask server in a subprocess
     env = os.environ.copy()
     env["FLASK_APP"] = "app.py"
-    process = subprocess.Popen(
-        ["python3", "app.py"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        env=env,
-        preexec_fn=os.setsid
-    )
     
-    # Wait for server to start
-    time.sleep(2)
+    # Use cross-platform process management
+    if sys.platform == 'win32':
+        # Windows doesn't support preexec_fn
+        process = subprocess.Popen(
+            ["python", "app.py"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env=env
+        )
+    else:
+        # Unix/Linux/Mac
+        process = subprocess.Popen(
+            ["python3", "app.py"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env=env,
+            preexec_fn=os.setsid
+        )
     
-    yield "http://localhost:5000"
+    # Wait for server to be ready with retry mechanism
+    server_url = "http://localhost:5000"
+    if not wait_for_server(server_url, timeout=10):
+        # Cleanup on failure
+        if sys.platform == 'win32':
+            process.terminate()
+        else:
+            os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+        process.wait()
+        pytest.fail("Flask server failed to start within timeout period")
     
-    # Cleanup: kill the process group
-    os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+    yield server_url
+    
+    # Cleanup: kill the process
+    if sys.platform == 'win32':
+        process.terminate()
+    else:
+        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
     process.wait()
 
 
